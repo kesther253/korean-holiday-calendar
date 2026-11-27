@@ -1,11 +1,16 @@
 
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+// GitHub Pages에서 오는 요청 허용
+app.use(cors({
+    origin: "https://kesther253.github.io"
+}));
 
 // 웹페이지 파일 제공
 app.use(express.static(__dirname));

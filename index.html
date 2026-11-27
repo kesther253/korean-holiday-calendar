@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국 공휴일 달력</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>한국 공휴일 달력</h1>
+        <p>공휴일을 확인하고 나만의 메모를 남겨보세요.</p>
+    </header>
+
+    <main>
+        <section class="calendar-section">
+            <h2>달력</h2>
+
+            <div class="calendar-header">
+                <button id="prev-month">이전 달</button>
+                <h3 id="current-month"></h3>
+                <button id="next-month">다음 달</button>
+            </div>
+
+            <div class="calendar" id="calendar">
+                <!-- JavaScript로 달력 생성 -->
+            </div>
+        </section>
+
+        
+<section class="memo-section">
+    <h2>나만의 한 줄 메모</h2>
+
+    <p id="selected-date">날짜를 선택해주세요.</p>
+
+    <div class="memo-editor">
+        <input
+            type="text"
+            id="memo-input"
+            placeholder="오늘의 한 줄 메모를 작성하세요."
+            maxlength="100"
+        >
+
+        <div class="memo-buttons">
+            <button id="save-memo">저장</button>
+            <button id="delete-memo">삭제</button>
+        </div>
+    </div>
+
+    <p id="memo-status"></p>
+</section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

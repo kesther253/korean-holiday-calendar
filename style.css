@@ -1,0 +1,183 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f6fa;
+    color: #333;
+    padding: 30px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+header h1 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #777;
+}
+
+main {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.calendar-section,
+.memo-section {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+button {
+    border: none;
+    background-color: #333;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.day {
+    min-height: 75px;
+    padding: 10px;
+    background-color: #f5f6fa;
+    border-radius: 6px;
+}
+
+.day-name {
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+.sunday {
+    color: #e74c3c;
+}
+
+.saturday {
+    color: #3498db;
+}
+
+.holiday {
+    color: #e74c3c;
+}
+
+.day-number {
+    font-weight: bold;
+}
+
+.memo-section input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+#memo-list {
+    margin-top: 15px;
+}
+
+.day {
+    cursor: pointer;
+    transition: 0.2s;
+    border: 2px solid transparent;
+}
+
+.day:hover {
+    background-color: #e8edf5;
+}
+
+.day.selected {
+    background-color: #e4edff;
+    border: 2px solid #4778d9;
+}
+
+.day.selected .day-number {
+    color: #2459b5;
+    font-weight: bold;
+}
+
+
+/* 공휴일 이름 */
+.holiday-name {
+    font-size: 11px;
+    margin-top: 8px;
+    font-weight: bold;
+    color: #e74c3c;
+    word-break: keep-all;
+}
+
+/* 오늘 날짜 */
+.day.today {
+    border: 2px solid #333;
+}
+
+/* 메모 작성 영역 */
+.memo-editor {
+    margin-top: 15px;
+}
+
+.memo-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+#delete-memo {
+    background-color: #e74c3c;
+}
+
+#memo-status {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #777;
+}
+
+/* 선택 날짜 표시 */
+#selected-date {
+    font-weight: bold;
+    color: #4778d9;
+}
+
+
+/* 메모가 있는 날짜 표시 */
+.memo-mark {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #4778d9;
+    font-weight: bold;
+}

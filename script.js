@@ -19,8 +19,8 @@ const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
 async function loadHolidays() {
     try {
         const response = await fetch(
-            `/api/holidays?year=${currentYear}&month=${currentMonth + 1}`
-        );
+    `https://korean-holiday-calendar.onrender.com/api/holidays?year=${currentYear}&month=${currentMonth + 1}`
+);
 
         if (!response.ok) {
             throw new Error("공휴일 API 요청 실패");

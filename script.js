@@ -1,4 +1,7 @@
 
+// Render 서버 주소
+const API_BASE_URL = "https://korean-holiday-calendar.onrender.com";
+
 // 현재 날짜
 let today = new Date();
 
@@ -15,15 +18,37 @@ const currentMonthElement = document.getElementById("current-month");
 
 const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
 
+// 메모 데이터 불러오기
+function getMemos() {
+    try {
+        return JSON.parse(
+            localStorage.getItem("holidayMemos") || "{}"
+        );
+    } catch (error) {
+        console.error("메모 데이터 읽기 오류:", error);
+        return {};
+    }
+}
+
 // 공휴일 API 요청
 async function loadHolidays() {
     try {
-        const response = await fetch(
-    `https://korean-holiday-calendar.onrender.com/api/holidays?year=${currentYear}&month=${currentMonth + 1}`
-);
+        const apiUrl =
+            `${API_BASE_URL}/api/holidays?year=${currentYear}&month=${currentMonth + 1}`;
+
+        console.log("공휴일 API 요청 주소:", apiUrl);
+
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            cache: "no-store"
+        });
 
         if (!response.ok) {
-            throw new Error("공휴일 API 요청 실패");
+            const errorText = await response.text();
+
+            throw new Error(
+                `HTTP ${response.status}: ${errorText}`
+            );
         }
 
         const data = await response.json();
@@ -36,6 +61,7 @@ async function loadHolidays() {
 
     } catch (error) {
         console.error("공휴일 조회 오류:", error);
+
         holidays = [];
         createCalendar();
     }
@@ -81,6 +107,9 @@ function createCalendar() {
         calendar.appendChild(emptyElement);
     }
 
+    // 메모 데이터
+    const memos = getMemos();
+
     // 날짜 생성
     for (let date = 1; date <= lastDate; date++) {
         const dayElement = document.createElement("div");
@@ -104,14 +133,8 @@ function createCalendar() {
             String(item.locdate) === dateKey
         );
 
-
-// 해당 날짜에 저장된 메모가 있는지 확인
-const memos = JSON.parse(
-    localStorage.getItem("holidayMemos") || "{}"
-);
-
-const hasMemo = Boolean(memos[dateKey]);
-
+        // 메모 존재 여부
+        const hasMemo = Boolean(memos[dateKey]);
 
         // 일요일 및 공휴일
         if (dateDay === 0 || holiday) {
@@ -134,17 +157,15 @@ const hasMemo = Boolean(memos[dateKey]);
             dayElement.appendChild(holidayName);
         }
 
+        // 메모가 있는 날짜 표시
+        if (hasMemo) {
+            const memoMark = document.createElement("div");
 
-// 메모가 있는 날짜 표시
-if (hasMemo) {
-    const memoMark = document.createElement("div");
+            memoMark.classList.add("memo-mark");
+            memoMark.textContent = "메모 있음";
 
-    memoMark.classList.add("memo-mark");
-    memoMark.textContent = "메모 있음";
-
-    dayElement.appendChild(memoMark);
-}
-
+            dayElement.appendChild(memoMark);
+        }
 
         // 오늘 날짜 표시
         if (
@@ -163,20 +184,15 @@ if (hasMemo) {
         dayElement.prepend(dayNumber);
 
         // 날짜 클릭
-       
-dayElement.addEventListener("click", function () {
-    selectedDate = dateKey;
+        dayElement.addEventListener("click", function () {
+            selectedDate = dateKey;
 
-    document.getElementById("selected-date").textContent =
-        `${currentYear}년 ${currentMonth + 1}월 ${date}일`;
+            document.getElementById("selected-date").textContent =
+                `${currentYear}년 ${currentMonth + 1}월 ${date}일`;
 
-    // 선택한 날짜의 메모 불러오기
-    loadMemo();
-
-    // 달력 다시 생성
-    createCalendar();
-});
-
+            loadMemo();
+            createCalendar();
+        });
 
         calendar.appendChild(dayElement);
     }
@@ -206,17 +222,12 @@ document.getElementById("next-month").addEventListener("click", function () {
     loadHolidays();
 });
 
-// 처음 실행
-loadHolidays();
-
 // 메모 불러오기
 function loadMemo() {
     const memoInput = document.getElementById("memo-input");
     const memoStatus = document.getElementById("memo-status");
 
-    const memos = JSON.parse(
-        localStorage.getItem("holidayMemos") || "{}"
-    );
+    const memos = getMemos();
 
     memoInput.value = memos[selectedDate] || "";
 
@@ -242,9 +253,7 @@ document.getElementById("save-memo").addEventListener("click", function () {
         return;
     }
 
-    const memos = JSON.parse(
-        localStorage.getItem("holidayMemos") || "{}"
-    );
+    const memos = getMemos();
 
     memos[selectedDate] = memo;
 
@@ -267,9 +276,7 @@ document.getElementById("delete-memo").addEventListener("click", function () {
         return;
     }
 
-    const memos = JSON.parse(
-        localStorage.getItem("holidayMemos") || "{}"
-    );
+    const memos = getMemos();
 
     delete memos[selectedDate];
 
@@ -279,7 +286,12 @@ document.getElementById("delete-memo").addEventListener("click", function () {
     );
 
     document.getElementById("memo-input").value = "";
+
     document.getElementById("memo-status").textContent =
         "메모가 삭제되었습니다.";
-        createCalendar();
+
+    createCalendar();
 });
+
+// 처음 실행
+loadHolidays();
